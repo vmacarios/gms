@@ -1,16 +1,9 @@
-.idea/**
-/.idea/
-**/.idea
-**/*.iml
-**/.DS_Store
-**/target
 **/logs
-
-
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**
+.DS_Store
 
 ### STS ###
 .apt_generated

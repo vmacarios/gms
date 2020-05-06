@@ -3,7 +3,7 @@
 
 To use this service, the first step is setup a mysql docker container.\
 Assuming that the docker environment is already up and running, use the following command:\
-`docker run --name=mysql -itdv ~/project/path:/mnt/host -e MYSQL_RANDOM_ROOT_PASSWORD=yes mysql`
+`docker run --name=mysql -itdv ~/project/path:/mnt/host -e MYSQL_RANDOM_ROOT_PASSWORD=yes -p 3306:3306 mysql`
 
 Some explanations:\
 `--name` - define a name for the container\
@@ -12,6 +12,7 @@ Some explanations:\
 `d` - detached (run in background)\
 `v` - bind a host path to the guest as a volume\
 `e` - set environment variable\
+`p 3306:3306` - map guest port to host port\
 `mysql` - name of the desired image
 
 Check if the container is running: `docker ps`\
@@ -20,6 +21,8 @@ Access the container bash: `docker exec -it mysql /bin/bash`\
 If necessary, the config file is located at /etc/mysql/my.cnf\
 Access mysql client: `mysql -u root -p` (use the generated password)\
 Change the password: `ALTER USER 'root'@'localhost' IDENTIFIED BY 'newpassword';`\
+Create a new user: `CREATE USER 'newuser'@'%' IDENTIFIED BY 'user_password';`\
+Grant privileges: `GRANT ALL PRIVILEGES ON *.* TO 'newuser'@'%';`\
 Create the database: `CREATE DATABASE zip_db;`\
 Select the database: `USE zip_db;`\
 Use the provided zip_db.sql script to generate the table.
@@ -88,7 +91,7 @@ To send a non-error log by email, use:\
 `docker logs` - show the log for the container\
 `docker rename` - rename a container\
 `docker cp` - copy files between host and guest\
-`docker rm -v` - delete a container (-v also remove its associated volume) \
+`docker rm -v` - delete a container (-v also remove its associated volume)\
 `docker system prune` - purge all stopped containers\
 `docker images -a` - show all images\
 `docker rmi` - remove a image\
@@ -105,7 +108,8 @@ To send a non-error log by email, use:\
 `wc -l` - word count (lines)\
 `cut -f1` - print only the column number of the files\
 `sort -n` - order the list\
-`tail -n 1` - shows only the last value 
+`tail -n 1` - shows only the last value\
+`nc -vz ip port` - connection listener
 
 
 ####Useful mysql commands:
@@ -117,7 +121,15 @@ To send a non-error log by email, use:\
 `SHOW TABLES;`\
 `EXPLAIN table;`\
 `EXPLAIN query;`\
-`SELECT * FROM table;`
+`SELECT * FROM table;`\
+`SET NAMES utf8;`\
+`SHOW GRANTS FOR 'user';`\
+`GRANT ALL PRIVILEGES ON *.* TO 'newuser'@'%';`\
+`REVOKE ALL PRIVILEGES ON database_name.* FROM 'database_user'@'localhost';`\
+`CREATE USER 'newuser'@'%' IDENTIFIED BY 'user_password';`\
+`ALTER USER 'newuser'@'IP_ADDRESS' IDENTIFIED BY 'user_password';`\
+`DROP USER 'user'@'localhost'`
+
 
 ####Useful git commands:
 
@@ -126,8 +138,8 @@ To send a non-error log by email, use:\
 `git commit -m"message"` - commit to the branch\
 `git commit --amend` - edit the last commit message\
 `git pull` - pull data from origin\
-`git push` - push data to origin\
-`git checkout -b branchName` - connect to another branch\git 
-`git status` - check which files will be committed
-`git branch` - check available branches
+`git push origin branchName` - push data to origin\
+`git checkout -b branchName` - connect to another branch\ 
+`git status` - check which files will be committed\
+`git branch` - check available branches\
 `git log` - show commit history
