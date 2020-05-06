@@ -78,6 +78,12 @@ Initialize the logger in the class using:\
 To send a non-error log by email, use:\
 `Marker notifyAdmin = MarkerFactory.getMarker("NOTIFY_ADMIN");`
 
+##Configuring SpringBoot
+The initial project can be configured in the following address:\
+`https://start.spring.io/`\
+Add the necessary dependencies and insert them on the POM.xml\
+Adjust database connection settings in application.properties file
+
 ####Useful docker commands:
 
 `docker run` - pull and run an image\
@@ -107,7 +113,6 @@ To send a non-error log by email, use:\
 `sort -n` - order the list\
 `tail -n 1` - shows only the last value 
 
-
 ####Useful mysql commands:
 
 `SHOW VARIABLES LIKE "variable";`\
@@ -117,7 +122,14 @@ To send a non-error log by email, use:\
 `SHOW TABLES;`\
 `EXPLAIN table;`\
 `EXPLAIN query;`\
-`SELECT * FROM table;`
+`SELECT * FROM table;`\
+`SET NAMES utf8;`\
+`SHOW GRANTS FOR 'user';`\
+`GRANT ALL PRIVILEGES ON *.* TO 'newuser'@'%';`\
+`REVOKE ALL PRIVILEGES ON database_name.* FROM 'database_user'@'localhost';`\
+`CREATE USER 'newuser'@'%' IDENTIFIED BY 'user_password';`\
+`ALTER USER 'newuser'@'IP_ADDRESS' IDENTIFIED BY 'user_password';`\
+`DROP USER 'user'@'localhost'`
 
 ####Useful git commands:
 
@@ -126,8 +138,8 @@ To send a non-error log by email, use:\
 `git commit -m"message"` - commit to the branch\
 `git commit --amend` - edit the last commit message\
 `git pull` - pull data from origin\
-`git push` - push data to origin\
-`git checkout -b branchName` - connect to another branch\git 
-`git status` - check which files will be committed
-`git branch` - check available branches
+`git push origin branchName` - push data to origin\
+`git checkout -b branchName` - connect to another branch\
+`git status` - check which files will be committed\
+`git branch` - check available branches\
 `git log` - show commit history
