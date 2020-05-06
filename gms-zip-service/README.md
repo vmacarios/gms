@@ -81,6 +81,12 @@ Initialize the logger in the class using:\
 To send a non-error log by email, use:\
 `Marker notifyAdmin = MarkerFactory.getMarker("NOTIFY_ADMIN");`
 
+##Configuring SpringBoot
+The initial project can be configured in the following address:\
+`https://start.spring.io/`\
+Add the necessary dependencies and insert them on the POM.xml\
+Adjust database connection settings in application.properties file
+
 ####Useful docker commands:
 
 `docker run` - pull and run an image\
@@ -111,7 +117,6 @@ To send a non-error log by email, use:\
 `tail -n 1` - shows only the last value\
 `nc -vz ip port` - connection listener
 
-
 ####Useful mysql commands:
 
 `SHOW VARIABLES LIKE "variable";`\
@@ -130,7 +135,6 @@ To send a non-error log by email, use:\
 `ALTER USER 'newuser'@'IP_ADDRESS' IDENTIFIED BY 'user_password';`\
 `DROP USER 'user'@'localhost'`
 
-
 ####Useful git commands:
 
 `git add file` - add a file to be committed\
@@ -139,7 +143,7 @@ To send a non-error log by email, use:\
 `git commit --amend` - edit the last commit message\
 `git pull` - pull data from origin\
 `git push origin branchName` - push data to origin\
-`git checkout -b branchName` - connect to another branch\ 
+`git checkout -b branchName` - connect to another branch\
 `git status` - check which files will be committed\
 `git branch` - check available branches\
 `git log` - show commit history
