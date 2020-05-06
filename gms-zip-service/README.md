@@ -69,6 +69,14 @@ In case of truncated characters:\
 Finally, disable the local data loading:\
 `SET GLOBAL local_infile=0;`
 
+##Configuring LogBack (SLF4J)
+Add `logback-classic` from `ch.qos.logback` to POM.xml\
+Define the appenders and log level on resources/logback.xml\
+Initialize the logger in the class using:\
+`private static final Logger logger = LoggerFactory.getLogger(Zip.class);`
+
+To send a non-error log by email, use:\
+`Marker notifyAdmin = MarkerFactory.getMarker("NOTIFY_ADMIN");`
 
 ####Useful docker commands:
 
@@ -110,3 +118,16 @@ Finally, disable the local data loading:\
 `EXPLAIN table;`\
 `EXPLAIN query;`\
 `SELECT * FROM table;`
+
+####Useful git commands:
+
+`git add file` - add a file to be committed\
+`git reset file` - remove the file from the commit\
+`git commit -m"message"` - commit to the branch\
+`git commit --amend` - edit the last commit message\
+`git pull` - pull data from origin\
+`git push` - push data to origin\
+`git checkout -b branchName` - connect to another branch\git 
+`git status` - check which files will be committed
+`git branch` - check available branches
+`git log` - show commit history
