@@ -3,7 +3,7 @@
 
 To use this service, the first step is setup a mysql docker container.\
 Assuming that the docker environment is already up and running, use the following command:\
-`docker run --name=mysql -itdv ~/project/path:/mnt/host -e MYSQL_RANDOM_ROOT_PASSWORD=yes mysql`
+`docker run --name=mysql -itdv ~/project/path:/mnt/host -e MYSQL_RANDOM_ROOT_PASSWORD=yes -p 3306:3306 mysql`
 
 Some explanations:\
 `--name` - define a name for the container\
@@ -12,6 +12,7 @@ Some explanations:\
 `d` - detached (run in background)\
 `v` - bind a host path to the guest as a volume\
 `e` - set environment variable\
+`p 3306:3306` - map guest port to host port\
 `mysql` - name of the desired image
 
 Check if the container is running: `docker ps`\
@@ -20,6 +21,8 @@ Access the container bash: `docker exec -it mysql /bin/bash`\
 If necessary, the config file is located at /etc/mysql/my.cnf\
 Access mysql client: `mysql -u root -p` (use the generated password)\
 Change the password: `ALTER USER 'root'@'localhost' IDENTIFIED BY 'newpassword';`\
+Create a new user: `CREATE USER 'newuser'@'%' IDENTIFIED BY 'user_password';`\
+Grant privileges: `GRANT ALL PRIVILEGES ON *.* TO 'newuser'@'%';`\
 Create the database: `CREATE DATABASE zip_db;`\
 Select the database: `USE zip_db;`\
 Use the provided zip_db.sql script to generate the table.
@@ -94,7 +97,7 @@ Adjust database connection settings in application.properties file
 `docker logs` - show the log for the container\
 `docker rename` - rename a container\
 `docker cp` - copy files between host and guest\
-`docker rm -v` - delete a container (-v also remove its associated volume) \
+`docker rm -v` - delete a container (-v also remove its associated volume)\
 `docker system prune` - purge all stopped containers\
 `docker images -a` - show all images\
 `docker rmi` - remove a image\
@@ -111,7 +114,8 @@ Adjust database connection settings in application.properties file
 `wc -l` - word count (lines)\
 `cut -f1` - print only the column number of the files\
 `sort -n` - order the list\
-`tail -n 1` - shows only the last value 
+`tail -n 1` - shows only the last value\
+`nc -vz ip port` - connection listener
 
 ####Useful mysql commands:
 
