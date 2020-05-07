@@ -87,7 +87,30 @@ The initial project can be configured in the following address:\
 Add the necessary dependencies and insert them on the POM.xml\
 Adjust database connection settings in application.properties file
 
-####Useful docker commands:
+##Code
+
+###Controller Test
+When using JUnit 4, the annotation `@RunWith(SpringRunner.class)` should be used.\
+It was replace by `@ExtendWith(SpringExtension.class)` in JUnit 5 (jupiter).\
+Use `@WebMvcTest` to test just the web layer or `@SpringBootTest` to test in a Spring context.\
+MockMvc is auto-configured in the first case. For the second case, use `@AutoConfigureMockMvc`.\
+To mock a dependency, use `@Mock`. Use `@MockBean` instead when in a Spring context.
+
+To test the `findAll` method a list should be created and some zips added to it.\
+Then, using the `when` method, return the mocked result list from `zipService.findAll()` method.\
+The next step is to use the `mockMvc.perform()` and perform a get request.\
+Using `jsonPath`, compare the result size (`$` means the JSON root).\
+Check if the service was called just once and that there was no more interactions.
+
+###Controller
+The ZipService was injected using the constructor injection.\
+The URI was defined using `@GetMapping`\
+The result can be returned in two ways (both are in the code for studies):\
+`@ResponseBody` - which use the return as body.\
+`ResponseEntity<T>` - which allow to modify body, headers and status code.
+
+##Useful Commands
+####Useful docker commands
 
 `docker run` - pull and run an image\
 `docker ps -a` - show all containers\
@@ -104,7 +127,7 @@ Adjust database connection settings in application.properties file
 `docker volume ls -f dangling=true` - list all volumes not connected to any container\
 `docker volume prune` - remove all disconnected volumes
 
-####Useful bash commands:
+####Useful bash commands
 
 `lsof -i :port` - list ports in use (or open files if -i is suppressed)\
 `du -h folder` - display disk usage for the folder\
@@ -117,7 +140,7 @@ Adjust database connection settings in application.properties file
 `tail -n 1` - shows only the last value\
 `nc -vz ip port` - connection listener
 
-####Useful mysql commands:
+####Useful mysql commands
 
 `SHOW VARIABLES LIKE "variable";`\
 `SET GLOBAL @@variable="";`\
@@ -135,7 +158,7 @@ Adjust database connection settings in application.properties file
 `ALTER USER 'newuser'@'IP_ADDRESS' IDENTIFIED BY 'user_password';`\
 `DROP USER 'user'@'localhost'`
 
-####Useful git commands:
+####Useful git commands
 
 `git add file` - add a file to be committed\
 `git reset file` - remove the file from the commit\
@@ -146,4 +169,6 @@ Adjust database connection settings in application.properties file
 `git checkout -b branchName` - connect to another branch\
 `git status` - check which files will be committed\
 `git branch` - check available branches\
-`git log` - show commit history
+`git log` - show commit history\
+`git stash` - save the current working contents (then change to the desired branch)\
+`git stash pop` - get the stashed content (look for conflicts)
