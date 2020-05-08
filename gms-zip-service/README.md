@@ -101,6 +101,7 @@ Then, using the `when` method, return the mocked result list from `zipService.fi
 The next step is to use the `mockMvc.perform()` and perform a get request.\
 Using `jsonPath`, compare the result size (`$` means the JSON root).\
 Check if the service was called just once and that there was no more interactions.
+Test for Not Found URI.
 
 ###Controller
 The ZipService was injected using the constructor injection.\

@@ -7,7 +7,6 @@ import javax.persistence.Table;
 import java.time.Instant;
 
 @Entity
-@Table(name = "zip")
 public class Zip {
 
 	@Id

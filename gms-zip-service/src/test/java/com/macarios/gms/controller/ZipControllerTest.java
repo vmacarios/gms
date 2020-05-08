@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -46,9 +47,18 @@ public class ZipControllerTest {
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$", hasSize(2)))
+				.andExpect(jsonPath("$[0].zip", is("06184280")))
 				.andDo(print());
 		verify(zipService, times(1)).findAll();
 		verifyNoMoreInteractions(zipService);
+	}
+
+	@Test
+	public void wrongUri() throws Exception {
+		mockMvc.perform(get("/zip")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound())
+				.andDo(print());
 	}
 
 }
