@@ -24,6 +24,18 @@ public class Zip {
 	public Zip() {
 	}
 
+	public Zip(Integer id, String zip, String address, String comp, String neighborhood, String city, String state, Instant createdAt, Instant updatedAt) {
+		this.id = id;
+		this.zip = zip;
+		this.address = address;
+		this.comp = comp;
+		this.neighborhood = neighborhood;
+		this.city = city;
+		this.state = state;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+	}
+
 	public Zip(String zip, String address, String comp, String neighborhood, String city, String state, Instant createdAt, Instant updatedAt) {
 		this.zip = zip;
 		this.address = address;

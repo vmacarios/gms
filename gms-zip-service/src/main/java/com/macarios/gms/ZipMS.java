@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 
 @SpringBootApplication
-//@ComponentScan(basePackages = {"com.macarios.gms"})
+@ComponentScan(basePackages = {"com.macarios.gms"})
 public class ZipMS {
 	private static final Logger logger = LoggerFactory.getLogger(ZipMS.class);
 

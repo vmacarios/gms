@@ -53,13 +53,13 @@
         <asynchronousSending>false</asynchronousSending>
     </appender>
 
-    <logger name="com.macarios.gms" level="DEBUG" additivity="false">
+    <logger name="com.macarios.gms" level="INFO" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE-ROLLING"/>
         <!--<appender-ref ref="EMAIL"/>-->
     </logger>
 
-    <root level="DEBUG">
+    <root level="INFO">
         <appender-ref ref="CONSOLE"/>
     </root>
 

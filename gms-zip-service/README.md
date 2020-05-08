@@ -110,6 +110,17 @@ The result can be returned in two ways (both are in the code for studies):\
 `@ResponseBody` - which use the return as body.\
 `ResponseEntity<T>` - which allow to modify body, headers and status code.
 
+###Service Test
+To test the service, the `@SpringBootTest` is used.
+The repository can be mocked, but in this case, it would not be tested.
+If the repository was mocked, use the following line to retrieve the data:
+`when(zipRepository.findAll()).thenReturn(zipList);`
+Since the repository has no implemented method (auto-implemented by Spring),
+it should be tested together with the service.
+So, instead of `@MockBean` the annotation `@Autowired` should be used.
+The mocked test will be kept commented in the code for learning purposes.
+
+
 ##Useful Commands
 ####Useful docker commands
 
@@ -126,7 +137,8 @@ The result can be returned in two ways (both are in the code for studies):\
 `docker images -a` - show all images\
 `docker rmi` - remove a image\
 `docker volume ls -f dangling=true` - list all volumes not connected to any container\
-`docker volume prune` - remove all disconnected volumes
+`docker volume prune` - remove all disconnected volumes\
+`docker-machine` - control the VM status
 
 ####Useful bash commands
 
