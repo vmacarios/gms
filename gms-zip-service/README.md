@@ -61,7 +61,7 @@ Now, use the following command to populated the table:\
 `load data local infile 'ceps.tab'`\
 `into table zip`\
 `(@col1,@col2,@col3,@col4,@col5,@col6)`\
-`set zip=@col1,address=@col5,comp=@col6,neighborhood=@col4,city=@col2,state=@col3,created_at=now();`
+`set zip=@col1,address=@col5,comp=@col6,neighborhood=@col4,city=@col2,state=@col3,createdAt=now();`
 
 Confirm that the data was imported successfully:\
 `SELECT * FROM zip;`
@@ -169,6 +169,7 @@ The mocked test will be kept commented in the code for learning purposes.
 `REVOKE ALL PRIVILEGES ON database_name.* FROM 'database_user'@'localhost';`\
 `CREATE USER 'newuser'@'%' IDENTIFIED BY 'user_password';`\
 `ALTER USER 'newuser'@'IP_ADDRESS' IDENTIFIED BY 'user_password';`\
+`ALTER TABLE tableName RENAME COLUMN column1 TO column2;`
 `DROP USER 'user'@'localhost'`
 
 ####Useful git commands

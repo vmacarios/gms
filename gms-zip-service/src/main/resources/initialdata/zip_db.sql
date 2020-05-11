@@ -6,8 +6,8 @@ CREATE TABLE IF NOT EXISTS `zip_db`.`zip` (
   `neighborhood` VARCHAR(70) NULL,
   `city` VARCHAR(70) NOT NULL,
   `state` VARCHAR(45) NOT NULL,
-  `created_at` DATETIME NOT NULL,
-  `updated_at` DATETIME NULL,
+  `createdAt` DATETIME NOT NULL,
+  `updatedAt` DATETIME NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `zip_UNIQUE` (`zip` ASC) VISIBLE)
 ENGINE = InnoDB;
