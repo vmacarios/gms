@@ -32,10 +32,19 @@
     <javax.mail.version>1.6.2</javax.mail.version>
     <mockito.version>2.22.0</mockito.version>
     <mockito.scope>test</mockito.scope>
+    <h2.version>1.4.194</h2.version>
+    <h2.scope>runtime</h2.scope>
   </properties>
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
+        <version>${h2.version}</version>
+        <scope>${h2.scope}</scope>
+      </dependency>
+
       <dependency>
         <groupId>junit.jupiter</groupId>
         <artifactId>junit-jupiter-api</artifactId>
