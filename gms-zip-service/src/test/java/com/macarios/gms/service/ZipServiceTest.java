@@ -4,6 +4,7 @@ import com.macarios.gms.model.Zip;
 import com.macarios.gms.repository.ZipRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -12,26 +13,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class ZipServiceTest {
 	@MockBean
 	private ZipRepository zipRepository;
 
+	@Autowired
+	private ZipService zipService;
+
 	private static List<Zip> zipList = new ArrayList<>();
+	private static Zip zip;
 
 	@BeforeAll
 	public static void initialSetup() {
-		zipList.add(new Zip(
-				"06184280",
-				"R. Jambeiro",
-				"",
-				"Cidade das Flores",
-				"Osasco",
-				"SP",
-				Instant.now(),
-				Instant.now()));
+		zipList.add(zip);
+
 		zipList.add(new Zip(
 				"15085210",
 				"R. Gago Coutinho",
@@ -41,11 +40,20 @@ public class ZipServiceTest {
 				"SP",
 				Instant.now(),
 				null));
+
+		zip = new Zip(
+				"06184280",
+				"R. Jambeiro",
+				"",
+				"Cidade das Flores",
+				"Osasco",
+				"SP",
+				Instant.now(),
+				Instant.now());
 	}
 
 	@Test
 	public void getAllZips() {
-		ZipService zipService = new ZipService(zipRepository);
 		when(zipRepository.findAll()).thenReturn(zipList);
 
 		List<Zip> localZipList = zipService.findAll();
@@ -57,4 +65,11 @@ public class ZipServiceTest {
 		assertEquals("15085210", lastZip.getZip());
 	}
 
+	@Test
+	void saveZip() {
+		zipService.save(zip);
+
+		verify(zipRepository, times(1)).save(zip);
+		verifyNoMoreInteractions(zipRepository);
+	}
 }

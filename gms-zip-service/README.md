@@ -116,6 +116,8 @@ Use the following line to retrieve the data from the mocked repository:\
 `when(zipRepository.findAll()).thenReturn(zipList);`\
 Finally compare the data retrieved from the mocked repository.
 
+To test save method, just verify if the mocked repository was called and it was just once.
+
 ###Service Integration Test
 This test use the real service class (`@Autowired`) to test the access to the repository.\
 Create a Zip item, save it to the repository and check if it was successfully saved.
