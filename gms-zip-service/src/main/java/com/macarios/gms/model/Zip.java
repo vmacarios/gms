@@ -1,5 +1,7 @@
 package com.macarios.gms.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -7,6 +9,7 @@ import javax.persistence.Table;
 import java.time.Instant;
 
 @Entity
+@Table(name = "zip")
 public class Zip {
 
 	@Id
@@ -18,7 +21,9 @@ public class Zip {
 	private String neighborhood;
 	private String city;
 	private String state;
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
 	private Instant createdAt;
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
 	private Instant updatedAt;
 
 	public Zip() {
@@ -133,5 +138,4 @@ public class Zip {
 				", updatedAt=" + updatedAt +
 				'}';
 	}
-
 }

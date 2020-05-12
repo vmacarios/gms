@@ -87,22 +87,45 @@ Then, using the `when` method, return the mocked result list from `zipService.fi
 The next step is to use the `mockMvc.perform()` and perform a get request.\
 Using `jsonPath`, compare the result size (`$` means the JSON root).\
 Check if the service was called just once and that there was no more interactions.\
-Test for Not Found URI.
+Finally, test for Not Found URI.
+
+The second test is the `save` method.\
+The mocked service returns a zip object.\
+Using an `@Autowired ObjectMapper` it is converted to a JSON as string.\
+Date fields should be formatted using the following line in the model class:\
+`@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")`\
+Use the `MockMvc` to perform a POST action and assign it to a `ResultAction`.\
+Then, assert the result.
 
 ###Controller
 The ZipService was injected using the constructor injection.\
-The URI was defined using `@GetMapping`\
+The URI for `findAll` method was defined using `@GetMapping`\
 The result can be returned in two ways (both are in the code for studies):\
 `@ResponseBody` - which use the return as body.\
 `ResponseEntity<T>` - which allow to modify body, headers and status code.
 
+For the `save` method the URI is defined with `@PostMapping`\
+The zip object is passed as argument using `@RequestBody`\
+Return a `ResponseEntity` with the save method from the service and the `HttpStatus.CREATED`.
+
 ###Service Test
 To test the service, the `@SpringBootTest` is used.\
-The repository can be mocked, but in this case, it would not be tested.\
-If the repository was mocked, use the following line to retrieve the data:\
+The repository is mocked using `@MockBean`.\
+Then a list is created so the mock can return some data.\
+Use the following line to retrieve the data from the mocked repository:\
 `when(zipRepository.findAll()).thenReturn(zipList);`\
-Since the repository has no implemented method (auto-implemented by Spring),\
-it should be tested together with the service.\
-So, instead of `@MockBean` the annotation `@Autowired` should be used.\
-The mocked test was kept commented in the code for learning purposes.
+Finally compare the data retrieved from the mocked repository.
 
+###Service Integration Test
+This test use the real service class (`@Autowired`) to test the access to the repository.\
+Create a Zip item, save it to the repository and check if it was successfully saved.
+To avoid the use of a real DB instance, an application.properties file can be configured for the test context.
+H2 embedded DB will be used in this case:
+`spring.datasource.driver-class-name=org.h2.Driver`
+`spring.datasource.url=jdbc:h2:mem:zip_db;MODE=MySQL;DB_CLOSE_DELAY=-1`
+`spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect`
+`spring.jpa.properties.hibernate.hbm2ddl.auto=create`
+
+###Service
+The ZipRepository was injected using the constructor injection.\
+Use the repository to call the  methods.
