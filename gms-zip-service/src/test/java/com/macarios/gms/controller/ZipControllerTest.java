@@ -111,8 +111,8 @@ public class ZipControllerTest {
 		);
 
 		result.andExpect(status().isCreated())
-				.andExpect(jsonPath("$.zip").value("15085210"))
-				.andExpect(jsonPath("$.address").value("R. Gago Coutinho"));
+				.andExpect(jsonPath("$.zip").value(zip.getZip()))
+				.andExpect(jsonPath("$.address").value(zip.getAddress()));
 
 	}
 }
