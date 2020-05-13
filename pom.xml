@@ -14,6 +14,7 @@
   <groupId>com.macarios.gms</groupId>
   <artifactId>parent</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
 
   <modules>
     <module>gms-zip-service</module>

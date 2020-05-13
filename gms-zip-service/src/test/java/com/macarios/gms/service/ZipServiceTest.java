@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -26,21 +25,10 @@ public class ZipServiceTest {
 
 	private static List<Zip> zipList = new ArrayList<>();
 	private static Zip zip;
+	private static Zip zip2;
 
 	@BeforeAll
 	public static void initialSetup() {
-		zipList.add(zip);
-
-		zipList.add(new Zip(
-				"15085210",
-				"R. Gago Coutinho",
-				"",
-				"Pq. Estoril",
-				"S J Rio Preto",
-				"SP",
-				Instant.now(),
-				null));
-
 		zip = new Zip(
 				"06184280",
 				"R. Jambeiro",
@@ -50,6 +38,19 @@ public class ZipServiceTest {
 				"SP",
 				Instant.now(),
 				Instant.now());
+
+		zip2 = new Zip(
+				"15085210",
+				"R. Gago Coutinho",
+				"",
+				"Pq. Estoril",
+				"S J Rio Preto",
+				"SP",
+				Instant.now(),
+				null);
+
+		zipList.add(zip);
+		zipList.add(zip2);
 	}
 
 	@Test
