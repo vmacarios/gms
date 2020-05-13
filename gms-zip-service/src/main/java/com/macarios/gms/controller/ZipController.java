@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -34,6 +36,18 @@ public class ZipController {
 //		return new ResponseEntity<>(zipService.findAll(), HttpStatus.OK);
 //		return ResponseEntity.ok().body(zipService.findAll());
 //	}
+
+	@GetMapping("/zip/{id}")
+//	@ResponseBody
+	ResponseEntity<Zip> getOneZip(@PathVariable("id") Integer id) {
+		Zip zip = zipService.findById(id);
+		return zip == null ? new ResponseEntity<>(HttpStatus.NOT_FOUND) : new ResponseEntity<>(zip, HttpStatus.OK);
+
+//		if (zip == null) {
+//			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+//		}
+//		return zip;
+	}
 
 	/**
 	 * The POST method create a zip entry in DB using

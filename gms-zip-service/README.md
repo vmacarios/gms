@@ -97,6 +97,8 @@ Date fields should be formatted using the following line in the model class:\
 Use the `MockMvc` to perform a POST action and assign it to a `ResultAction`.\
 Then, assert the result.
 
+The method `getOneZip` is should be tested for a result or not found.
+
 ###Controller
 The ZipService was injected using the constructor injection.\
 The URI for `findAll` method was defined using `@GetMapping`\
@@ -107,6 +109,8 @@ The result can be returned in two ways (both are in the code for studies):\
 For the `save` method the URI is defined with `@PostMapping`\
 The zip object is passed as argument using `@RequestBody`\
 Return a `ResponseEntity` with the save method from the service and the `HttpStatus.CREATED`.
+
+To `getOneZip` the id is passed as argument using `@PathVariable`
 
 ###Service Test
 To test the service, the `@SpringBootTest` is used.\

@@ -35,4 +35,8 @@ public class ZipService {
 	public Zip save(Zip zip) {
 		return zipRepository.save(zip);
 	}
+
+	public Zip findById(Integer id) {
+		return null;
+	}
 }
