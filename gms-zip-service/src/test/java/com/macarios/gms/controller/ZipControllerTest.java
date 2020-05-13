@@ -8,11 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -47,10 +45,12 @@ public class ZipControllerTest {
 	private ObjectMapper objectMapper;
 
 	private static List<Zip> zipList = new ArrayList<>();
+	private static Zip zip1;
+	private static Zip zip2;
 
 	@BeforeAll
 	public static void initialSetup() {
-		zipList.add(new Zip(
+		zip1 = new Zip(
 				"06184280",
 				"R. Jambeiro",
 				"",
@@ -58,8 +58,8 @@ public class ZipControllerTest {
 				"Osasco",
 				"SP",
 				Instant.now(),
-				Instant.now()));
-		zipList.add(new Zip(
+				Instant.now());
+		zip2 = new Zip(
 				"15085210",
 				"R. Gago Coutinho",
 				"",
@@ -67,7 +67,9 @@ public class ZipControllerTest {
 				"S J Rio Preto",
 				"SP",
 				Instant.now(),
-				null));
+				null);
+		zipList.add(zip1);
+		zipList.add(zip2);
 	}
 
 	@Test
@@ -77,7 +79,8 @@ public class ZipControllerTest {
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$", hasSize(2)))
-				.andExpect(jsonPath("$[0].zip", is("06184280")))
+				.andExpect(jsonPath("$[0].zip", is(zipList.get(0).getZip())))
+				.andExpect(jsonPath("$[1].zip", is(zipList.get(1).getZip())))
 				.andDo(print());
 		verify(zipServiceMock, times(1)).findAll();
 		verifyNoMoreInteractions(zipServiceMock);
@@ -93,29 +96,15 @@ public class ZipControllerTest {
 
 	@Test
 	void successfullySavedAZip() throws Exception {
-
-		Zip zip = new Zip(
-				"15085210",
-				"R. Gago Coutinho",
-				"",
-				"Pq. Estoril",
-				"S J Rio Preto",
-				"SP",
-				Instant.now(),
-				null);
-		when(zipServiceMock.save(any(Zip.class))).thenReturn(zip);
-
-		String zipJSON = objectMapper.writeValueAsString(zip);
-
+		when(zipServiceMock.save(any(Zip.class))).thenReturn(zip1);
+		String zipJSON = objectMapper.writeValueAsString(zip1);
 		ResultActions result = mockMvc.perform(post("/zips")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(zipJSON)
 		);
-
 		result.andExpect(status().isCreated())
-				.andExpect(jsonPath("$.zip").value(zip.getZip()))
-				.andExpect(jsonPath("$.address").value(zip.getAddress()));
-
+				.andExpect(jsonPath("$.zip").value(zip1.getZip()))
+				.andExpect(jsonPath("$.address").value(zip1.getAddress()));
 	}
 
 	@Test
@@ -124,12 +113,11 @@ public class ZipControllerTest {
 		mockMvc.perform(get("/zip/{id}", 1)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.zip").value( zipList.get(0).getZip()))
-				.andExpect(jsonPath("$.address").value( zipList.get(0).getAddress()))
+				.andExpect(jsonPath("$.zip").value(zipList.get(0).getZip()))
+				.andExpect(jsonPath("$.address").value(zipList.get(0).getAddress()))
 				.andDo(print());
 		verify(zipServiceMock, times(1)).findById(1);
 		verifyNoMoreInteractions(zipServiceMock);
-
 	}
 
 	@Test

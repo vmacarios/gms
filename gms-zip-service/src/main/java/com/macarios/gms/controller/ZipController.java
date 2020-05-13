@@ -38,15 +38,9 @@ public class ZipController {
 //	}
 
 	@GetMapping("/zip/{id}")
-//	@ResponseBody
 	ResponseEntity<Zip> getOneZip(@PathVariable("id") Integer id) {
 		Zip zip = zipService.findById(id);
 		return zip == null ? new ResponseEntity<>(HttpStatus.NOT_FOUND) : new ResponseEntity<>(zip, HttpStatus.OK);
-
-//		if (zip == null) {
-//			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-//		}
-//		return zip;
 	}
 
 	/**
