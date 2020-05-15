@@ -10,6 +10,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ZipController {
@@ -37,10 +38,17 @@ public class ZipController {
 //		return ResponseEntity.ok().body(zipService.findAll());
 //	}
 
+	/**
+	 * Given the
+	 *
+	 * @param id
+	 * @return a ResponseEntity with the requested body, or not found.
+	 */
 	@GetMapping("/zip/{id}")
 	ResponseEntity<Zip> getOneZip(@PathVariable("id") Integer id) {
-		Zip zip = zipService.findById(id);
-		return zip == null ? new ResponseEntity<>(HttpStatus.NOT_FOUND) : new ResponseEntity<>(zip, HttpStatus.OK);
+		Optional<Zip> zip = zipService.findById(id);
+		return zip.map(z -> new ResponseEntity<>(z, HttpStatus.OK))
+				.orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 
 	/**

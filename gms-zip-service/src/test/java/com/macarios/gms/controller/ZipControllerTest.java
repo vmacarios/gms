@@ -12,12 +12,15 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -109,7 +112,7 @@ public class ZipControllerTest {
 
 	@Test
 	void getOneZip() throws Exception {
-		when(zipServiceMock.findById(1)).thenReturn(zipList.get(0));
+		when(zipServiceMock.findById(any())).thenReturn(Optional.of(zipList.get(0)));
 		mockMvc.perform(get("/zip/{id}", 1)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
@@ -122,11 +125,11 @@ public class ZipControllerTest {
 
 	@Test
 	void zipNotFound() throws Exception {
-		when(zipServiceMock.findById(3)).thenReturn(null);
-		mockMvc.perform(get("/zip/{id}", 3))
+		when(zipServiceMock.findById(any())).thenReturn(Optional.empty());
+		mockMvc.perform(get("/zip/{id}", 1))
 				.andExpect(status().isNotFound())
 				.andDo(print());
-		verify(zipServiceMock, times(1)).findById(3);
+		verify(zipServiceMock, times(1)).findById(1);
 		verifyNoMoreInteractions(zipServiceMock);
 	}
 }

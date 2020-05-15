@@ -11,8 +11,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -75,5 +76,24 @@ public class ZipServiceTest {
 	}
 
 
+	@Test
+	void zipNotFound() {
+		when(zipRepository.findById(any())).thenReturn(Optional.empty());
 
+		Optional<Zip> zip = zipService.findById(1);
+		assertFalse(zip.isPresent());
+		verify(zipRepository, times(1)).findById(1);
+		verifyNoMoreInteractions(zipRepository);
+	}
+
+	@Test
+	void getOneZip() {
+		when(zipRepository.findById(any())).thenReturn(Optional.ofNullable(zip));
+
+		Optional<Zip> zipOptional = zipService.findById(1);
+		assertTrue(zipOptional.isPresent());
+		assertEquals(zipOptional.get(), zip);
+		verify(zipRepository, times(1)).findById(1);
+		verifyNoMoreInteractions(zipRepository);
+	}
 }

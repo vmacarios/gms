@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * This class is responsible for the interactions with the repository
@@ -36,7 +37,7 @@ public class ZipService {
 		return zipRepository.save(zip);
 	}
 
-	public Zip findById(Integer id) {
-		return null;
+	public Optional<Zip> findById(Integer id) {
+		return zipRepository.findById(id);
 	}
 }
