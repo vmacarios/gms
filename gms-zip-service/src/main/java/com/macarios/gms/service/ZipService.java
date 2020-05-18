@@ -9,7 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * This class is responsible for the interactions with the repository
+ * @author Victor Macarios
+ * @since May/2020
+ * ZipService is the class responsible for interactions with the repository
  */
 @Service
 public class ZipService {
@@ -21,7 +23,6 @@ public class ZipService {
 	}
 
 	/**
-	 *
 	 * @return every zip entries
 	 */
 	public List<Zip> findAll() {
@@ -29,6 +30,7 @@ public class ZipService {
 	}
 
 	/**
+	 * Save a ZIP object into DB
 	 *
 	 * @param zip is the object to be saved
 	 * @return the saved object
@@ -37,7 +39,22 @@ public class ZipService {
 		return zipRepository.save(zip);
 	}
 
+	/**
+	 * Find a ZIP using the ID
+	 *
+	 * @param id - the desired ID
+	 * @return an Optional of a ZIP object
+	 */
 	public Optional<Zip> findById(Integer id) {
 		return zipRepository.findById(id);
+	}
+
+	/**
+	 * Delete a ZIP using the ID
+	 *
+	 * @param id - the desired ID to be removed
+	 */
+	public void deleteById(Integer id) {
+		zipRepository.deleteById(id);
 	}
 }

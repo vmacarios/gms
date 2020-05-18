@@ -16,6 +16,9 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * @author victor macarios
+ */
 @SpringBootTest
 public class ZipServiceTest {
 	@MockBean
@@ -24,9 +27,8 @@ public class ZipServiceTest {
 	@Autowired
 	private ZipService zipService;
 
-	private static List<Zip> zipList = new ArrayList<>();
-	private static Zip zip;
-	private static Zip zip2;
+	private static final List<Zip> zipList = new ArrayList<>();
+	private static Zip zip, zip2;
 
 	@BeforeAll
 	public static void initialSetup() {
@@ -55,12 +57,12 @@ public class ZipServiceTest {
 	}
 
 	@Test
-	public void getAllZips() {
+	public void testGetAllZips() {
 		when(zipRepository.findAll()).thenReturn(zipList);
 
-		List<Zip> localZipList = zipService.findAll();
-		Zip firstZip = localZipList.get(0);
-		Zip lastZip = localZipList.get(localZipList.size() - 1);
+		final List<Zip> localZipList = zipService.findAll();
+		final Zip firstZip = localZipList.get(0);
+		final Zip lastZip = localZipList.get(localZipList.size() - 1);
 
 		assertEquals(2, localZipList.size());
 		assertEquals("R. Jambeiro", firstZip.getAddress());
@@ -68,7 +70,7 @@ public class ZipServiceTest {
 	}
 
 	@Test
-	void saveZip() {
+	void testSaveZip() {
 		zipService.save(zip);
 
 		verify(zipRepository, times(1)).save(zip);
@@ -77,23 +79,32 @@ public class ZipServiceTest {
 
 
 	@Test
-	void zipNotFound() {
+	void testZipNotFound() {
 		when(zipRepository.findById(any())).thenReturn(Optional.empty());
 
-		Optional<Zip> zip = zipService.findById(1);
+		final Optional<Zip> zip = zipService.findById(1);
 		assertFalse(zip.isPresent());
 		verify(zipRepository, times(1)).findById(1);
 		verifyNoMoreInteractions(zipRepository);
 	}
 
 	@Test
-	void getOneZip() {
+	void testGetOneZip() {
 		when(zipRepository.findById(any())).thenReturn(Optional.ofNullable(zip));
 
-		Optional<Zip> zipOptional = zipService.findById(1);
-		assertTrue(zipOptional.isPresent());
-		assertEquals(zipOptional.get(), zip);
+		final Optional<Zip> selectedZip = zipService.findById(1);
+		assertTrue(selectedZip.isPresent());
+		assertEquals(selectedZip.get(), zip);
 		verify(zipRepository, times(1)).findById(1);
 		verifyNoMoreInteractions(zipRepository);
 	}
+
+	@Test
+	void testDeleteZip() {
+		zipService.deleteById(1);
+
+		verify(zipRepository, times(1)).deleteById(1);
+		verifyNoMoreInteractions(zipRepository);
+	}
+
 }

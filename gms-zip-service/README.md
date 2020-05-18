@@ -120,7 +120,10 @@ Use the following line to retrieve the data from the mocked repository:\
 `when(zipRepository.findAll()).thenReturn(zipList);`\
 Finally compare the data retrieved from the mocked repository.
 
-To test save method, just verify if the mocked repository was called and it was just once.
+To test save and/or delete method, just verify if the mocked repository was called and it was just once.
+
+FindById method can receive a Zip object. It should be tested if is present.
+If it is present, check if the result is the same as requested.
 
 ###Service Integration Test
 This test use the real service class (`@Autowired`) to test the access to the repository.\
@@ -131,6 +134,10 @@ H2 embedded DB will be used in this case:
 `spring.datasource.url=jdbc:h2:mem:zip_db;MODE=MySQL;DB_CLOSE_DELAY=-1`
 `spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect`
 `spring.jpa.properties.hibernate.hbm2ddl.auto=create`
+
+Some objects are created in the `@BeforeAll` method.
+Then save one of them to DB `@BeforeEach` one. 
+Use `@Transacional` in the methods which changes DB to roll back to it previously state.
 
 ###Service
 The ZipRepository was injected using the constructor injection.\
