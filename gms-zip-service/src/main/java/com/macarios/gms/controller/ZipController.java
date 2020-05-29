@@ -10,9 +10,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Victor Macarios
+ * @since May/2020
+ * ZipController is the class that receives data from the user and interact with the service.
+ */
 @RestController
 public class ZipController {
 
@@ -32,7 +38,7 @@ public class ZipController {
 	 */
 	@GetMapping("/zips")
 	@ResponseBody
-	List<Zip> getAllZips() {
+	private List<Zip> getAllZips() {
 		return zipService.findAll();
 	}
 //	The below method shows another ways to do the same as above
@@ -43,13 +49,13 @@ public class ZipController {
 //	}
 
 	/**
-	 * The GET action uses an ID to find the desired ZIP.
+	 * The GET action uses an id to find the desired zip.
 	 *
-	 * @param id - The ID identifies the ZIP.
+	 * @param id - The ID identifies the zip.
 	 * @return a ResponseEntity with the requested body, or not found.
 	 */
 	@GetMapping("/zips/{id}")
-	ResponseEntity<Zip> getOneZip(@PathVariable("id") Integer id) {
+	private ResponseEntity<Zip> getOneZip(@PathVariable("id") Integer id) {
 		Optional<Zip> zip = zipService.findById(id);
 		return zip.map(z -> new ResponseEntity<>(z, HttpStatus.OK))
 				.orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -62,7 +68,7 @@ public class ZipController {
 	 * @return the HttpStatus as 201 (CREATED).
 	 */
 	@PostMapping("/zips")
-	ResponseEntity<Zip> create(@RequestBody Zip zip) {
+	private ResponseEntity<Zip> create(@RequestBody Zip zip) {
 		return new ResponseEntity<>(zipService.save(zip), HttpStatus.CREATED);
 	}
 
@@ -83,10 +89,27 @@ public class ZipController {
 		return ResponseEntity.noContent().build();
 	}
 
+	/**
+	 * The PUT action updates a zip entry.
+	 *
+	 * @param id     - the object to be updated.
+	 * @param newZip - the new object.
+	 * @return a ResponseEntity with the body, or not found.
+	 */
 	@PutMapping("/zips/{id}")
-	private ResponseEntity<Zip> update(@PathVariable("id") Integer id, @RequestBody Zip zip) {
-		Optional<Zip> updatedZip = Optional.of(zipService.update(zip));
-		return updatedZip.map(z -> new ResponseEntity<>(z, HttpStatus.OK))
+	private ResponseEntity<Zip> update(@PathVariable("id") Integer id, @RequestBody Zip newZip) {
+		Optional<Zip> updatedZip = zipService.findById(id)
+				.map(zip -> {
+					zip.setZip(newZip.getZip());
+					zip.setAddress(newZip.getAddress());
+					zip.setComp(newZip.getComp());
+					zip.setNeighborhood(newZip.getNeighborhood());
+					zip.setCity(newZip.getCity());
+					zip.setState(newZip.getState());
+					zip.setUpdatedAt(Instant.now());
+					return zip;
+				});
+		return updatedZip.map(zip -> new ResponseEntity<>(zipService.update(zip), HttpStatus.OK))
 				.orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 }

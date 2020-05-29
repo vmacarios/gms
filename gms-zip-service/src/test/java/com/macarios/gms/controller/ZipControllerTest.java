@@ -1,6 +1,5 @@
 package com.macarios.gms.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.macarios.gms.model.Zip;
 import com.macarios.gms.service.ZipService;
@@ -31,6 +30,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 //import org.junit.runner.RunWith;
 
+/**
+ * @author Victor Macarios
+ */
 //@ExtendWith(SpringExtension.class)
 @WebMvcTest
 //@SpringBootTest
@@ -47,12 +49,12 @@ public class ZipControllerTest {
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	private static List<Zip> zipList = new ArrayList<>();
+	private static final List<Zip> zipList = new ArrayList<>();
 	private static Zip zip1;
 	private static Zip zip2;
 
 	@BeforeAll
-	public static void initialSetup() {
+	static void initialSetup() {
 		zip1 = new Zip(
 				"06184280",
 				"R. Jambeiro",
@@ -63,6 +65,7 @@ public class ZipControllerTest {
 				Instant.now(),
 				Instant.now());
 		zip2 = new Zip(
+				1,
 				"15085210",
 				"R. Gago Coutinho",
 				"",
@@ -76,7 +79,7 @@ public class ZipControllerTest {
 	}
 
 	@Test
-	void getAllZips() throws Exception {
+	void testGetAllZips() throws Exception {
 		when(zipServiceMock.findAll()).thenReturn(zipList);
 		mockMvc.perform(get("/zips")
 				.contentType(MediaType.APPLICATION_JSON))
@@ -90,7 +93,7 @@ public class ZipControllerTest {
 	}
 
 	@Test
-	void wrongUri() throws Exception {
+	void testWrongUri() throws Exception {
 		mockMvc.perform(get("/zip")
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNotFound())
@@ -101,7 +104,7 @@ public class ZipControllerTest {
 	}
 
 	@Test
-	void successfullySavedAZip() throws Exception {
+	void testSuccessfullySavedAZip() throws Exception {
 		when(zipServiceMock.save(any(Zip.class))).thenReturn(zipList.get(0));
 		String zipJSON = objectMapper.writeValueAsString(zip1);
 		ResultActions result = mockMvc.perform(post("/zips")
@@ -116,7 +119,7 @@ public class ZipControllerTest {
 	}
 
 	@Test
-	void getOneZip() throws Exception {
+	void testGetOneZip() throws Exception {
 		when(zipServiceMock.findById(any())).thenReturn(Optional.of(zipList.get(0)));
 		mockMvc.perform(get("/zips/{id}", 1)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -129,7 +132,7 @@ public class ZipControllerTest {
 	}
 
 	@Test
-	void zipNotFound() throws Exception {
+	void testZipNotFound() throws Exception {
 		when(zipServiceMock.findById(any())).thenReturn(Optional.empty());
 		mockMvc.perform(get("/zips/{id}", 1))
 				.andExpect(status().isNotFound())
@@ -139,7 +142,7 @@ public class ZipControllerTest {
 	}
 
 	@Test
-	void deleteZip() throws Exception {
+	void testeDeleteZip() throws Exception {
 		doNothing().when(zipServiceMock).deleteById(any());
 		mockMvc.perform(delete("/zips/{id}", 1))
 				.andExpect(status().isNoContent())
@@ -149,7 +152,7 @@ public class ZipControllerTest {
 	}
 
 	@Test
-	void tryToDeleteANotFoundZip() throws Exception {
+	void testDeleteANotFoundZip() throws Exception {
 		doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(zipServiceMock).deleteById(any());
 		mockMvc.perform(delete("/zips/{id}", 1))
 				.andExpect(status().isNotFound())
@@ -160,6 +163,7 @@ public class ZipControllerTest {
 
 	@Test
 	void testUpdateZip() throws Exception {
+		when(zipServiceMock.findById(any())).thenReturn(Optional.ofNullable(zipList.get(1)));
 		when(zipServiceMock.update(any(Zip.class))).thenReturn(zipList.get(1));
 		String zipJson = objectMapper.writeValueAsString(zip2);
 		ResultActions result = mockMvc.perform(put("/zips/{id}", 1)
@@ -169,20 +173,21 @@ public class ZipControllerTest {
 				.andExpect(jsonPath("$.zip").value(zipList.get(1).getZip()))
 				.andExpect(jsonPath("$.address").value(zipList.get(1).getAddress()))
 				.andDo(print());
+		verify(zipServiceMock, times(1)).findById(any());
 		verify(zipServiceMock, times(1)).update(any(Zip.class));
 		verifyNoMoreInteractions(zipServiceMock);
 	}
 
 	@Test
 	void testUpdateANotFoundZip() throws Exception {
-		when(zipServiceMock.update(any(Zip.class))).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+//		when(zipServiceMock.update(any(Zip.class))).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
 		String zipJson = objectMapper.writeValueAsString(zip2);
 		mockMvc.perform(put("/zips/{id}", 1)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(zipJson))
 				.andExpect(status().isNotFound());
-		verify(zipServiceMock, times(1)).update(any(Zip.class));
-		verifyNoMoreInteractions(zipServiceMock);
+//		verify(zipServiceMock, times(1)).update(any(Zip.class));
+//		verifyNoMoreInteractions(zipServiceMock);
 
 	}
 }

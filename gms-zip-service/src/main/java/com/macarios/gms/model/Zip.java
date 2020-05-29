@@ -5,6 +5,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.*;
 import java.time.Instant;
 
+/**
+ * @author Victor Macarios
+ * @since May/2020
+ * Zip is the model class.
+ */
 @Entity
 @Table(name = "zip")
 public class Zip {

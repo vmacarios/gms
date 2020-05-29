@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * @author victor macarios
+ * @author Victor Macarios
  */
 @SpringBootTest
 public class ZipServiceTest {
@@ -33,6 +33,7 @@ public class ZipServiceTest {
 	@BeforeAll
 	public static void initialSetup() {
 		zip = new Zip(
+				1,
 				"06184280",
 				"R. Jambeiro",
 				"",
@@ -43,6 +44,7 @@ public class ZipServiceTest {
 				Instant.now());
 
 		zip2 = new Zip(
+				2,
 				"15085210",
 				"R. Gago Coutinho",
 				"",
@@ -59,11 +61,9 @@ public class ZipServiceTest {
 	@Test
 	public void testGetAllZips() {
 		when(zipRepository.findAll()).thenReturn(zipList);
-
 		final List<Zip> localZipList = zipService.findAll();
 		final Zip firstZip = localZipList.get(0);
 		final Zip lastZip = localZipList.get(localZipList.size() - 1);
-
 		assertEquals(2, localZipList.size());
 		assertEquals("R. Jambeiro", firstZip.getAddress());
 		assertEquals("15085210", lastZip.getZip());
@@ -72,7 +72,6 @@ public class ZipServiceTest {
 	@Test
 	void testSaveZip() {
 		zipService.save(zip);
-
 		verify(zipRepository, times(1)).save(zip);
 		verifyNoMoreInteractions(zipRepository);
 	}
@@ -81,7 +80,6 @@ public class ZipServiceTest {
 	@Test
 	void testZipNotFound() {
 		when(zipRepository.findById(any())).thenReturn(Optional.empty());
-
 		final Optional<Zip> zip = zipService.findById(1);
 		assertFalse(zip.isPresent());
 		verify(zipRepository, times(1)).findById(1);
@@ -91,7 +89,6 @@ public class ZipServiceTest {
 	@Test
 	void testGetOneZip() {
 		when(zipRepository.findById(any())).thenReturn(Optional.ofNullable(zip));
-
 		final Optional<Zip> selectedZip = zipService.findById(1);
 		assertTrue(selectedZip.isPresent());
 		assertEquals(selectedZip.get(), zip);
@@ -102,9 +99,14 @@ public class ZipServiceTest {
 	@Test
 	void testDeleteZip() {
 		zipService.deleteById(1);
-
 		verify(zipRepository, times(1)).deleteById(1);
 		verifyNoMoreInteractions(zipRepository);
 	}
 
+	@Test
+	void testUpdateZip() {
+		zipService.update(zip);
+		verify(zipRepository, times(1)).save(any(Zip.class));
+		verifyNoMoreInteractions(zipRepository);
+	}
 }

@@ -11,7 +11,7 @@ import java.util.Optional;
 /**
  * @author Victor Macarios
  * @since May/2020
- * ZipService is the class responsible for interactions with the repository
+ * ZipService is the class responsible for interactions with the repository.
  */
 @Service
 public class ZipService {
@@ -23,42 +23,48 @@ public class ZipService {
 	}
 
 	/**
-	 * @return every zip entries
+	 * @return every zip entries.
 	 */
 	public List<Zip> findAll() {
 		return zipRepository.findAll();
 	}
 
 	/**
-	 * Save a ZIP object into DB
+	 * Save a zip object into DB.
 	 *
-	 * @param zip is the object to be saved
-	 * @return the saved object
+	 * @param zip is the object to be saved.
+	 * @return the saved object.
 	 */
 	public Zip save(Zip zip) {
 		return zipRepository.save(zip);
 	}
 
 	/**
-	 * Find a ZIP using the ID
+	 * Find a zip using the id.
 	 *
-	 * @param id - the desired ID
-	 * @return an Optional of a ZIP object
+	 * @param id - the desired id.
+	 * @return an Optional of a zip object.
 	 */
 	public Optional<Zip> findById(Integer id) {
 		return zipRepository.findById(id);
 	}
 
 	/**
-	 * Delete a ZIP using the ID
+	 * Delete a zip using the id.
 	 *
-	 * @param id - the desired ID to be removed
+	 * @param id - the desired id to be removed.
 	 */
 	public void deleteById(Integer id) {
 		zipRepository.deleteById(id);
 	}
 
-	public Zip update(Zip zip) {
-		return null;
+	/**
+	 * Update a zip.
+	 *
+	 * @param newZip - the updated zip.
+	 * @return a zip body.
+	 */
+	public Zip update(Zip newZip) {
+		return zipRepository.save(newZip);
 	}
 }

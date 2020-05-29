@@ -101,6 +101,8 @@ The method `getOneZip` is should be tested for a result or not found.
 
 The tests for `delete` checks if the returned code is 204 (no content) or 404 (not found).
 
+The tests for `update` checks if the returned code is 200 (OK) or 404 (not found).
+
 ###Controller
 The ZipService was injected using the constructor injection.\
 The URI for `findAll` method was defined using `@GetMapping`\
@@ -116,6 +118,8 @@ To `getOneZip` the id is passed as argument using `@PathVariable`.
 
 `delete` method returns status as 204 (no content) if it successful delete the object.
 Or catches `EmptyResultDataAccessException`, log it and return 404 (not found).
+
+`update` method send the new data to the server and update the object if it is found. Otherwise, return 404 (not found).
 
 ###Service Test
 To test the service, the `@SpringBootTest` is used.\

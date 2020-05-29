@@ -75,6 +75,7 @@ Adjust database connection settings in application.properties file
 `EXPLAIN table;`\
 `EXPLAIN query;`\
 `SELECT * FROM table;`\
+`SELECT * FROM table ORDER BY id DESC LIMIT 1;`\
 `SET NAMES utf8;`\
 `SHOW GRANTS FOR 'user';`\
 `GRANT ALL PRIVILEGES ON *.* TO 'newuser'@'%';`\
