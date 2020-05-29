@@ -57,4 +57,8 @@ public class ZipService {
 	public void deleteById(Integer id) {
 		zipRepository.deleteById(id);
 	}
+
+	public Zip update(Zip zip) {
+		return null;
+	}
 }

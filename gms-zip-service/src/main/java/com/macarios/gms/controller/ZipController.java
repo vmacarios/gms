@@ -82,4 +82,11 @@ public class ZipController {
 		}
 		return ResponseEntity.noContent().build();
 	}
+
+	@PutMapping("/zips/{id}")
+	private ResponseEntity<Zip> update(@PathVariable("id") Integer id, @RequestBody Zip zip) {
+		Optional<Zip> updatedZip = Optional.of(zipService.update(zip));
+		return updatedZip.map(z -> new ResponseEntity<>(z, HttpStatus.OK))
+				.orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+	}
 }
