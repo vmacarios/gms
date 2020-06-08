@@ -1,5 +1,5 @@
 # Generic Management System
-# ZIP Microservice
+## ZIP Microservice
 
 This microservice is part of the GMS.\ 
 To use this service, the first step is setup a mysql docker container.\
@@ -73,9 +73,8 @@ In case of truncated characters:\
 Finally, disable the local data loading:\
 `SET GLOBAL local_infile=0;`
 
-##Code
-
-###Controller Test
+## Code
+### Controller Test
 When using JUnit 4, the annotation `@RunWith(SpringRunner.class)` should be used.\
 It was replace by `@ExtendWith(SpringExtension.class)` in JUnit 5 (jupiter).\
 Use `@WebMvcTest` to test just the web layer or `@SpringBootTest` to test in a Spring context.\
@@ -103,7 +102,7 @@ The tests for `delete` checks if the returned code is 204 (no content) or 404 (n
 
 The tests for `update` checks if the returned code is 200 (OK) or 404 (not found).
 
-###Controller
+### Controller
 The ZipService was injected using the constructor injection.\
 The URI for `findAll` method was defined using `@GetMapping`\
 The result can be returned in two ways (both are in the code for studies):\
@@ -121,7 +120,7 @@ Or catches `EmptyResultDataAccessException`, log it and return 404 (not found).
 
 `update` method send the new data to the server and update the object if it is found. Otherwise, return 404 (not found).
 
-###Service Test
+### Service Test
 To test the service, the `@SpringBootTest` is used.\
 The repository is mocked using `@MockBean`.\
 Then a list is created so the mock can return some data.\
@@ -134,7 +133,7 @@ To test save and/or delete method, just verify if the mocked repository was call
 FindById method can receive a Zip object. It should be tested if is present.
 If it is present, check if the result is the same as requested.
 
-###Service Integration Test
+### Service Integration Test
 This test use the real service class (`@Autowired`) to test the access to the repository.\
 Create a Zip item, save it to the repository and check if it was successfully saved.
 To avoid the use of a real DB instance, an application.properties file can be configured for the test context.
@@ -148,6 +147,6 @@ Some objects are created in the `@BeforeAll` method.
 Then save one of them to DB `@BeforeEach` one. 
 Use `@Transacional` in the methods which changes DB to roll back to it previously state.
 
-###Service
+### Service
 The ZipRepository was injected using the constructor injection.\
 Use the repository to call the  methods.
