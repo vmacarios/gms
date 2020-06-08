@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -68,7 +69,7 @@ public class ZipController {
 	 * @return the HttpStatus as 201 (CREATED).
 	 */
 	@PostMapping("/zips")
-	private ResponseEntity<Zip> create(@RequestBody Zip zip) {
+	private ResponseEntity<Zip> create(@Valid @RequestBody Zip zip) {
 		return new ResponseEntity<>(zipService.save(zip), HttpStatus.CREATED);
 	}
 
@@ -97,7 +98,7 @@ public class ZipController {
 	 * @return a ResponseEntity with the body, or not found.
 	 */
 	@PutMapping("/zips/{id}")
-	private ResponseEntity<Zip> update(@PathVariable("id") Integer id, @RequestBody Zip newZip) {
+	private ResponseEntity<Zip> update(@PathVariable("id") Integer id, @Valid @RequestBody Zip newZip) {
 		Optional<Zip> updatedZip = zipService.findById(id)
 				.map(zip -> {
 					zip.setZip(newZip.getZip());

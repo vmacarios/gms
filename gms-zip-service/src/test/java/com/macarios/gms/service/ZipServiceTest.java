@@ -61,17 +61,32 @@ public class ZipServiceTest {
 	@Test
 	public void testGetAllZips() {
 		when(zipRepository.findAll()).thenReturn(zipList);
+
 		final List<Zip> localZipList = zipService.findAll();
 		final Zip firstZip = localZipList.get(0);
 		final Zip lastZip = localZipList.get(localZipList.size() - 1);
+
 		assertEquals(2, localZipList.size());
-		assertEquals("R. Jambeiro", firstZip.getAddress());
-		assertEquals("15085210", lastZip.getZip());
+
+		assertEquals(localZipList.get(0).getZip(), firstZip.getZip());
+		assertEquals(localZipList.get(0).getAddress(), firstZip.getAddress());
+		assertEquals(localZipList.get(0).getComp(), firstZip.getComp());
+		assertEquals(localZipList.get(0).getNeighborhood(), firstZip.getNeighborhood());
+		assertEquals(localZipList.get(0).getCity(), firstZip.getCity());
+		assertEquals(localZipList.get(0).getState(), firstZip.getState());
+
+		assertEquals(localZipList.get(1).getZip(), lastZip.getZip());
+		assertEquals(localZipList.get(1).getAddress(), lastZip.getAddress());
+		assertEquals(localZipList.get(1).getComp(), lastZip.getComp());
+		assertEquals(localZipList.get(1).getNeighborhood(), lastZip.getNeighborhood());
+		assertEquals(localZipList.get(1).getCity(), lastZip.getCity());
+		assertEquals(localZipList.get(1).getState(), lastZip.getState());
 	}
 
 	@Test
 	void testSaveZip() {
 		zipService.save(zip);
+
 		verify(zipRepository, times(1)).save(zip);
 		verifyNoMoreInteractions(zipRepository);
 	}
@@ -80,7 +95,9 @@ public class ZipServiceTest {
 	@Test
 	void testZipNotFound() {
 		when(zipRepository.findById(any())).thenReturn(Optional.empty());
+
 		final Optional<Zip> zip = zipService.findById(1);
+
 		assertFalse(zip.isPresent());
 		verify(zipRepository, times(1)).findById(1);
 		verifyNoMoreInteractions(zipRepository);
@@ -89,7 +106,9 @@ public class ZipServiceTest {
 	@Test
 	void testGetOneZip() {
 		when(zipRepository.findById(any())).thenReturn(Optional.ofNullable(zip));
+
 		final Optional<Zip> selectedZip = zipService.findById(1);
+
 		assertTrue(selectedZip.isPresent());
 		assertEquals(selectedZip.get(), zip);
 		verify(zipRepository, times(1)).findById(1);
@@ -99,6 +118,7 @@ public class ZipServiceTest {
 	@Test
 	void testDeleteZip() {
 		zipService.deleteById(1);
+
 		verify(zipRepository, times(1)).deleteById(1);
 		verifyNoMoreInteractions(zipRepository);
 	}
@@ -106,6 +126,7 @@ public class ZipServiceTest {
 	@Test
 	void testUpdateZip() {
 		zipService.update(zip);
+
 		verify(zipRepository, times(1)).save(any(Zip.class));
 		verifyNoMoreInteractions(zipRepository);
 	}

@@ -3,6 +3,7 @@ package com.macarios.gms.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.Instant;
 
 /**
@@ -17,12 +18,17 @@ public class Zip {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	@NotNull
 	private String zip;
+	@NotNull
 	private String address;
 	private String comp;
 	private String neighborhood;
+	@NotNull
 	private String city;
+	@NotNull
 	private String state;
+	@NotNull
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
 	private Instant createdAt;
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")

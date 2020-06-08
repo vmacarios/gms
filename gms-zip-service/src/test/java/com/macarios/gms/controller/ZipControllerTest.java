@@ -1,5 +1,6 @@
 package com.macarios.gms.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.macarios.gms.model.Zip;
 import com.macarios.gms.service.ZipService;
@@ -64,6 +65,7 @@ public class ZipControllerTest {
 				"SP",
 				Instant.now(),
 				Instant.now());
+
 		zip2 = new Zip(
 				1,
 				"15085210",
@@ -86,8 +88,20 @@ public class ZipControllerTest {
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$", hasSize(2)))
 				.andExpect(jsonPath("$[0].zip", is(zipList.get(0).getZip())))
+				.andExpect(jsonPath("$[0].address", is(zipList.get(0).getAddress())))
+				.andExpect(jsonPath("$[0].comp", is(zipList.get(0).getComp())))
+				.andExpect(jsonPath("$[0].neighborhood", is(zipList.get(0).getNeighborhood())))
+				.andExpect(jsonPath("$[0].city", is(zipList.get(0).getCity())))
+				.andExpect(jsonPath("$[0].state", is(zipList.get(0).getState())))
+
 				.andExpect(jsonPath("$[1].zip", is(zipList.get(1).getZip())))
+				.andExpect(jsonPath("$[1].address", is(zipList.get(1).getAddress())))
+				.andExpect(jsonPath("$[1].comp", is(zipList.get(1).getComp())))
+				.andExpect(jsonPath("$[1].neighborhood", is(zipList.get(1).getNeighborhood())))
+				.andExpect(jsonPath("$[1].city", is(zipList.get(1).getCity())))
+				.andExpect(jsonPath("$[1].state", is(zipList.get(1).getState())))
 				.andDo(print());
+
 		verify(zipServiceMock, times(1)).findAll();
 		verifyNoMoreInteractions(zipServiceMock);
 	}
@@ -109,11 +123,16 @@ public class ZipControllerTest {
 		String zipJSON = objectMapper.writeValueAsString(zip1);
 		ResultActions result = mockMvc.perform(post("/zips")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(zipJSON)
-		);
+				.content(zipJSON));
+
 		result.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.zip").value(zipList.get(0).getZip()))
-				.andExpect(jsonPath("$.address").value(zipList.get(0).getAddress()));
+				.andExpect(jsonPath("$.address").value(zipList.get(0).getAddress()))
+				.andExpect(jsonPath("$.comp").value(zipList.get(0).getComp()))
+				.andExpect(jsonPath("$.neighborhood").value(zipList.get(0).getNeighborhood()))
+				.andExpect(jsonPath("$.city").value(zipList.get(0).getCity()))
+				.andExpect(jsonPath("$.state").value(zipList.get(0).getState()));
+
 		verify(zipServiceMock, times(1)).save(any(Zip.class));
 		verifyNoMoreInteractions(zipServiceMock);
 	}
@@ -126,7 +145,12 @@ public class ZipControllerTest {
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.zip").value(zipList.get(0).getZip()))
 				.andExpect(jsonPath("$.address").value(zipList.get(0).getAddress()))
+				.andExpect(jsonPath("$.comp").value(zipList.get(0).getComp()))
+				.andExpect(jsonPath("$.neighborhood").value(zipList.get(0).getNeighborhood()))
+				.andExpect(jsonPath("$.city").value(zipList.get(0).getCity()))
+				.andExpect(jsonPath("$.state").value(zipList.get(0).getState()))
 				.andDo(print());
+
 		verify(zipServiceMock, times(1)).findById(1);
 		verifyNoMoreInteractions(zipServiceMock);
 	}
@@ -137,6 +161,7 @@ public class ZipControllerTest {
 		mockMvc.perform(get("/zips/{id}", 1))
 				.andExpect(status().isNotFound())
 				.andDo(print());
+
 		verify(zipServiceMock, times(1)).findById(1);
 		verifyNoMoreInteractions(zipServiceMock);
 	}
@@ -147,6 +172,7 @@ public class ZipControllerTest {
 		mockMvc.perform(delete("/zips/{id}", 1))
 				.andExpect(status().isNoContent())
 				.andDo(print());
+
 		verify(zipServiceMock, times(1)).deleteById(1);
 		verifyNoMoreInteractions(zipServiceMock);
 	}
@@ -157,6 +183,7 @@ public class ZipControllerTest {
 		mockMvc.perform(delete("/zips/{id}", 1))
 				.andExpect(status().isNotFound())
 				.andDo(print());
+
 		verify(zipServiceMock, times(1)).deleteById(1);
 		verifyNoMoreInteractions(zipServiceMock);
 	}
@@ -169,10 +196,16 @@ public class ZipControllerTest {
 		ResultActions result = mockMvc.perform(put("/zips/{id}", 1)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(zipJson));
+
 		result.andExpect(status().isOk())
 				.andExpect(jsonPath("$.zip").value(zipList.get(1).getZip()))
 				.andExpect(jsonPath("$.address").value(zipList.get(1).getAddress()))
+				.andExpect(jsonPath("$.comp").value(zipList.get(1).getComp()))
+				.andExpect(jsonPath("$.neighborhood").value(zipList.get(1).getNeighborhood()))
+				.andExpect(jsonPath("$.city").value(zipList.get(1).getCity()))
+				.andExpect(jsonPath("$.state").value(zipList.get(1).getState()))
 				.andDo(print());
+
 		verify(zipServiceMock, times(1)).findById(any());
 		verify(zipServiceMock, times(1)).update(any(Zip.class));
 		verifyNoMoreInteractions(zipServiceMock);
@@ -186,8 +219,32 @@ public class ZipControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(zipJson))
 				.andExpect(status().isNotFound());
-//		verify(zipServiceMock, times(1)).update(any(Zip.class));
-//		verifyNoMoreInteractions(zipServiceMock);
+		verify(zipServiceMock, times(1)).findById(any());
+		verifyNoMoreInteractions(zipServiceMock);
+
+	}
+
+	@Test
+	void testInvalidFields() throws Exception {
+		Zip zip = new Zip(
+				"06184280",
+				null,
+				"",
+				"Cidade das Flores",
+				"Osasco",
+				"SP",
+				Instant.now(),
+				Instant.now());
+
+		String zipJson = objectMapper.writeValueAsString(zip);
+		mockMvc.perform(put("/zips/{id}", 1)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(zipJson))
+
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.errors", hasSize(8)));
+		verify(zipServiceMock, times(1)).findById(any());
+		verifyNoMoreInteractions(zipServiceMock);
 
 	}
 }
