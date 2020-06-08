@@ -18,7 +18,7 @@ The microservices are:
 - Mailing Service
 - Finance Service 
 
-##Configuring LogBack (SLF4J)
+## Configuring LogBack (SLF4J)
 Add `logback-classic` from `ch.qos.logback` to POM.xml\
 Define the appenders and log level on resources/logback.xml\
 Initialize the logger in the class using:\
@@ -27,14 +27,14 @@ Initialize the logger in the class using:\
 To send a non-error log by email, use:\
 `Marker notifyAdmin = MarkerFactory.getMarker("NOTIFY_ADMIN");`
 
-##Configuring SpringBoot
+## Configuring SpringBoot
 The initial project can be configured in the following address:\
 `https://start.spring.io/`\
 Add the necessary dependencies and insert them on the POM.xml\
 Adjust database connection settings in application.properties file
 
-##Useful Commands
-####Useful docker commands
+## Useful Commands
+#### Useful docker commands
 
 `docker run` - pull and run an image\
 `docker ps -a` - show all containers\
@@ -52,7 +52,7 @@ Adjust database connection settings in application.properties file
 `docker volume prune` - remove all disconnected volumes\
 `docker-machine` - control the VM status
 
-####Useful bash commands
+#### Useful bash commands
 
 `lsof -i :port` - list ports in use (or open files if -i is suppressed)\
 `du -h folder` - display disk usage for the folder\
@@ -65,7 +65,7 @@ Adjust database connection settings in application.properties file
 `tail -n 1` - shows only the last value\
 `nc -vz ip port` - connection listener
 
-####Useful mysql commands
+#### Useful mysql commands
 
 `SHOW VARIABLES LIKE "variable";`\
 `SET GLOBAL @@variable="";`\
@@ -85,7 +85,7 @@ Adjust database connection settings in application.properties file
 `ALTER TABLE tableName RENAME COLUMN column1 TO column2;`\
 `DROP USER 'user'@'localhost'`
 
-####Useful git commands
+#### Useful git commands
 
 `git add file` - add a file to be committed\
 `git reset file` - remove the file from the commit\
